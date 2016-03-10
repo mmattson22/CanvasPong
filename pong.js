@@ -43,6 +43,21 @@ Paddle.prototype.render = function() {
   ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
+function Ball(x, y) {
+  this.x = x;
+  this.y = y;
+  this.x_speed = 0;
+  this.y_speed = 3;
+  this.radius = 5;
+}
+
+Ball.prototype.render = function() {
+  context.beginPath();
+  context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
+  context.fillStyle = "#000000";
+  context.fill();
+};
+
 function Player() {
    this.paddle = new Paddle(175, 580, 50, 10);
 }
@@ -61,10 +76,12 @@ Computer.prototype.render = function() {
 
 var player = new Player();
 var computer = new Computer();
+var ball = new Ball(200, 300);
 
 var render = function() {
   ctx.fillStyle = "#7F7F7F";
   ctx.fillRect(0, 0, width, height);
   player.render();
   computer.render();
+  ball.render();
 };

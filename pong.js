@@ -15,7 +15,7 @@ window.onload = function() {
   animate(step);
 };
 
-var step = function() {
+var step = function() { //This is the big guy
   update();
   render();
   animate(step);
@@ -23,6 +23,7 @@ var step = function() {
 
 var update = function() {
   player.update();
+  computer.update(ball);
   ball.update(player.paddle, computer.paddle);
 };
 
@@ -45,7 +46,7 @@ Paddle.prototype.render = function() {
   ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
-function Ball(x, y) {
+function Ball(x, y) { //give the ball properties
   this.x = x;
   this.y = y;
   this.x_speed = 1;
@@ -53,19 +54,19 @@ function Ball(x, y) {
   this.radius = 5;
 };
 
-Ball.prototype.update = function() {
+Ball.prototype.update = function() { //give the ball some speed, varies based on collision type
   this.x += this.x_speed;
   this.y += this.y_speed;
 };
 
-Ball.prototype.render = function() {
+Ball.prototype.render = function() { //draw the ball
   ctx.beginPath();
   ctx.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
   ctx.fillStyle = "#000000";
   ctx.fill();
 };
 
-Ball.prototype.update = function(paddle1, paddle2) {
+Ball.prototype.update = function(paddle1, paddle2) { //Testing for collision
   this.x += this.x_speed;
   this.y += this.y_speed;
   var top_x = this.x - 5;
@@ -136,6 +137,22 @@ Paddle.prototype.move = function(x, y) {
   }
 };
 
+Computer.prototype.update = function(ball) {
+  var xcor = ball.x;
+  var dist = -((this.paddle.x + (this.paddle.width / 2)) - xcor);
+  if(dist < 0 && dist < -4) { // max speed left
+    dist = -2;
+  } else if(dist > 0 && dist > 4) { // max speed right
+    dist = 2;//must be slow, otherwise the computer is unbeatable
+  }
+  this.paddle.move(dist, 0);
+  if(this.paddle.x < 0) {
+    this.paddle.x = 0;
+  } else if (this.paddle.x + this.paddle.width > 400) {
+    this.paddle.x = 400 - this.paddle.width;
+  }
+};
+
 function Computer() {
   this.paddle = new Paddle(175, 10, 50, 10);
 }
@@ -169,5 +186,3 @@ window.addEventListener("keydown", function(event) {
 window.addEventListener("keyup", function(event) {
   delete keysDown[event.keyCode];
 });
-
-

@@ -28,7 +28,7 @@ var update = function() {
 };
 
 var render = function() {
-  ctx.fillStyle = "#7F7F7F";
+  ctx.fillStyle = "#7f7f7f";
   ctx.fillRect(0, 0, width, height);
 };
 
@@ -42,7 +42,7 @@ function Paddle(x, y, width, height) {
 }
 
 Paddle.prototype.render = function() {
-  ctx.fillStyle = "#FFFFFF";
+  ctx.fillStyle = "#21a237";
   ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
@@ -62,7 +62,7 @@ Ball.prototype.update = function() { //give the ball some speed, varies based on
 Ball.prototype.render = function() { //draw the ball
   ctx.beginPath();
   ctx.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = "#ff0000";
   ctx.fill();
 };
 
@@ -75,11 +75,13 @@ Ball.prototype.update = function(paddle1, paddle2) { //Testing for collision
   var bottom_y = this.y + 5;
 
   if(this.x - 5 < 0) { // hitting the left wall
+
+    this.x_speed = -this.x_speed;
     this.x = 5;
-    this.x_speed = -this.x_speed;
   } else if(this.x + 5 > 400) { // hitting the right wall
-    this.x = 395;
+    
     this.x_speed = -this.x_speed;
+    this.x = 395;
   }
 
   if(this.y < 0 || this.y > 600) { // a point was scored
